@@ -1,26 +1,171 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 222 47% 11%;
+  --foreground: 213 31% 91%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 222 84% 5%;
+  --secondary: 221 83% 53%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 212 100% 47%;
+  --accent-foreground: 210 40% 98%;
+  --success: 142 76% 36%;
+  --warning: 38 92% 50%;
+  --danger: 0 84% 60%;
+  --card: 224 71% 4%;
+  --card-foreground: 213 31% 91%;
+  --border: 215 27% 32%;
+  --muted: 215 27% 32%;
+  --muted-foreground: 217 10% 64%;
+  --glow: 0 0 10px rgba(96, 165, 250, 0.2);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-background: hsl(222 47% 11%);
+  --color-foreground: hsl(213 31% 91%);
+  --color-primary: hsl(217 91% 60%);
+  --color-primary-foreground: hsl(222 84% 5%);
+  --color-secondary: hsl(221 83% 53%);
+  --color-secondary-foreground: hsl(210 40% 98%);
+  --color-accent: hsl(212 100% 47%);
+  --color-accent-foreground: hsl(210 40% 98%);
+  --color-card: hsl(224 71% 4%);
+  --color-card-foreground: hsl(213 31% 91%);
+  --color-border: hsl(215 27% 32%);
+  --color-muted: hsl(215 27% 32%);
+  --color-muted-foreground: hsl(217 10% 64%);
+  --color-success: hsl(142 76% 36%);
+  --color-warning: hsl(38 92% 50%);
+  --color-danger: hsl(0 84% 60%);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground));
+  background: hsl(var(--background));
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Gaming-inspired animations */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--primary);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--primary), 0 0 30px var(--primary);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes neon-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@layer base {
+  body {
+    font-family: var(--font-orbitron);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+  }
+
+  /* Utility classes */
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.6s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out;
+  }
+
+  .animate-neon-flicker {
+    animation: neon-flicker 1.5s ease-in-out infinite;
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .neon-border {
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+  }
+
+  .gradient-text {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hover-glow:hover {
+    box-shadow: var(--glow);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
 }

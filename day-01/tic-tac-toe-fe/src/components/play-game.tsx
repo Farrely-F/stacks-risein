@@ -22,9 +22,17 @@ export function PlayGame({ game }: PlayGameProps) {
   const isPlayerTwo =
     userData.profile.stxAddress.testnet === game["player-two"];
 
+  // Determine which symbol each player is using based on the board state
+  // If there's only one move on the board, that's the creator's symbol
+  const movesOnBoard = game.board.filter(cell => cell !== Move.EMPTY);
+  const playerOneSymbol = movesOnBoard.length > 0 ? movesOnBoard[0] : Move.X;
+  const playerTwoSymbol = playerOneSymbol === Move.X ? Move.O : Move.X;
+
   const isJoinable = game["player-two"] === null && !isPlayerOne;
   const isJoinedAlready = isPlayerOne || isPlayerTwo;
-  const nextMove = game["is-player-one-turn"] ? Move.X : Move.O;
+  
+  // Determine next move based on whose turn it is and their symbol
+  const nextMove = game["is-player-one-turn"] ? playerOneSymbol : playerTwoSymbol;
   const isMyTurn =
     (game["is-player-one-turn"] && isPlayerOne) ||
     (!game["is-player-one-turn"] && isPlayerTwo);
@@ -48,43 +56,43 @@ export function PlayGame({ game }: PlayGameProps) {
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-gray-500">Bet Amount: </span>
-          <span>{formatStx(game["bet-amount"])} STX</span>
+          <span className="text-muted-foreground">Stake Amount: </span>
+          <span className="text-card-foreground">{formatStx(game["bet-amount"])} STX</span>
         </div>
 
         <div className="flex items-center justify-between gap-2">
-          <span className="text-gray-500">Player One: </span>
+          <span className="text-muted-foreground">Player One: </span>
           <Link
-            href={explorerAddress(game["player-one"])}
-            target="_blank"
-            className="hover:underline"
-          >
-            {abbreviateAddress(game["player-one"])}
-          </Link>
+              href={explorerAddress(game["player-one"])}
+              target="_blank"
+              className="hover:underline text-primary hover:text-primary/80"
+            >
+              {abbreviateAddress(game["player-one"])}
+            </Link>
         </div>
 
         <div className="flex items-center justify-between gap-2">
-          <span className="text-gray-500">Player Two: </span>
+          <span className="text-muted-foreground">Player Two: </span>
           {game["player-two"] ? (
             <Link
               href={explorerAddress(game["player-two"])}
               target="_blank"
-              className="hover:underline"
+              className="hover:underline text-primary hover:text-primary/80"
             >
               {abbreviateAddress(game["player-two"])}
             </Link>
           ) : (
-            <span>Nobody</span>
+            <span className="text-muted-foreground">Nobody</span>
           )}
         </div>
 
         {game["winner"] && (
           <div className="flex items-center justify-between gap-2">
-            <span className="text-gray-500">Winner: </span>
+            <span className="text-muted-foreground">Winner: </span>
             <Link
               href={explorerAddress(game["winner"])}
               target="_blank"
-              className="hover:underline"
+              className="hover:underline text-success hover:text-success/80 font-semibold"
             >
               {abbreviateAddress(game["winner"])}
             </Link>
@@ -94,8 +102,8 @@ export function PlayGame({ game }: PlayGameProps) {
 
       {isJoinable && (
         <button
-          onClick={() => handleJoinGame(game.id, playedMoveIndex, nextMove)}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          onClick={() => handleJoinGame(game.id, playedMoveIndex, playerTwoSymbol)}
+          className="bg-primary text-primary-foreground px-4 py-2 rounded-lg"
         >
           Join Game
         </button>
@@ -104,14 +112,16 @@ export function PlayGame({ game }: PlayGameProps) {
       {isMyTurn && (
         <button
           onClick={() => handlePlayGame(game.id, playedMoveIndex, nextMove)}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-primary text-primary-foreground px-4 py-2 rounded-lg"
         >
           Play
         </button>
       )}
 
       {isJoinedAlready && !isMyTurn && !isGameOver && (
-        <div className="text-gray-500">Waiting for opponent to play...</div>
+        <div className="text-muted-foreground">
+          Waiting for opponent to play...
+        </div>
       )}
     </div>
   );

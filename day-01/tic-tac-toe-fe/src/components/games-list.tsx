@@ -1,168 +1,208 @@
 "use client";
 
-import { Game } from "@/lib/contract";
+import { Game, Move } from "@/lib/contract";
 import Link from "next/link";
 import { GameBoard } from "./game-board";
 import { useStacks } from "@/hooks/use-stacks";
-import { useMemo } from "react";
 import { formatStx } from "@/lib/stx-utils";
+import { useMemo } from "react";
 
-export function GamesList({ games }: { games: Game[] }) {
+interface GamesListProps {
+  games: Game[];
+}
+
+export function GamesList({ games }: GamesListProps) {
   const { userData } = useStacks();
 
-  // User Games are games in which the user is a player
-  // and a winner has not been decided yet
-  const userGames = useMemo(() => {
-    if (!userData) return [];
-    const userAddress = userData.profile.stxAddress.testnet;
-    const filteredGames = games.filter(
+  const { userGames, joinableGames, endedGames } = useMemo(() => {
+    const userAddress = userData?.profile.stxAddress.testnet;
+
+    const userGames = games.filter(
       (game) =>
         (game["player-one"] === userAddress ||
           game["player-two"] === userAddress) &&
         game.winner === null
     );
-    return filteredGames;
-  }, [userData, games]);
 
-  // Joinable games are games in which there still isn't a second player
-  // and also the currently logged in user is not the creator of the game
-  const joinableGames = useMemo(() => {
-    if (!userData) return [];
-    const userAddress = userData.profile.stxAddress.testnet;
-
-    return games.filter(
+    const joinableGames = games.filter(
       (game) =>
         game.winner === null &&
         game["player-one"] !== userAddress &&
         game["player-two"] === null
     );
+
+    const endedGames = games.filter(
+      (game) => game.winner !== null
+    );
+
+    return { userGames, joinableGames, endedGames };
   }, [games, userData]);
 
-  // Ended games are games in which the winner has been decided
-  const endedGames = useMemo(() => {
-    return games.filter((game) => game.winner !== null);
-  }, [games]);
+  const EmptyState = ({ title, description, buttonText }: { title: string; description: string; buttonText: string }) => (
+    <div className="bg-card border border-border rounded-lg p-12 text-center animate-scale-in">
+      <div className="text-6xl mb-4 animate-float">🎮</div>
+      <h3 className="text-xl font-bold text-card-foreground mb-2">{title}</h3>
+      <p className="text-muted-foreground mb-6">{description}</p>
+      <Link
+        href="/create"
+        className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300"
+      >
+        ⚔️ {buttonText}
+      </Link>
+    </div>
+  );
+
+  const GameCard = ({ game, type }: { game: Game; type: 'active' | 'joinable' | 'ended' }) => {
+    // Determine which symbol each player is using based on the board state
+    const movesOnBoard = game.board.filter(cell => cell !== Move.EMPTY);
+    const playerOneSymbol = movesOnBoard.length > 0 ? movesOnBoard[0] : Move.X;
+    const playerTwoSymbol = playerOneSymbol === Move.X ? Move.O : Move.X;
+    const nextSymbol = game["is-player-one-turn"] ? playerOneSymbol : playerTwoSymbol;
+    const nextSymbolDisplay = nextSymbol === Move.X ? "⚡" : "🔥";
+
+    const getStatusInfo = () => {
+      switch (type) {
+        case 'active':
+          return {
+            statusText: `Next: ${nextSymbolDisplay}`,
+            statusColor: 'text-primary',
+            borderColor: 'border-primary/30',
+            glowColor: 'hover:shadow-primary/20'
+          };
+        case 'joinable':
+          return {
+            statusText: "🔥 Ready to Join!",
+            statusColor: 'text-success',
+            borderColor: 'border-success/30',
+            glowColor: 'hover:shadow-success/20'
+          };
+        case 'ended':
+          return {
+            statusText: game.winner ? `🏆 Winner: ${game.winner}` : "🤝 Draw",
+            statusColor: 'text-warning',
+            borderColor: 'border-warning/30',
+            glowColor: 'hover:shadow-warning/20'
+          };
+      }
+    };
+
+    const statusInfo = getStatusInfo();
+
+    return (
+      <Link
+        key={game.id}
+        href={`/game/${game.id}`}
+        className={`group block bg-card border ${statusInfo.borderColor} rounded-lg p-6 hover:border-opacity-60 transition-all duration-300 hover:scale-105 ${statusInfo.glowColor} hover:shadow-lg animate-scale-in ${type === 'ended' ? 'opacity-75' : ''}`}
+      >
+        <div className="mb-6">
+          <GameBoard
+            board={game.board}
+            cellClassName="size-8 text-xl"
+          />
+        </div>
+        
+        <div className="space-y-3">
+          {/* Bet Amount */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Stake:</span>
+            <div className="flex items-center gap-1">
+              <span className="text-lg font-bold text-card-foreground">{formatStx(game["bet-amount"])}</span>
+              <span className="text-sm text-muted-foreground">STX</span>
+            </div>
+          </div>
+          
+          {/* Status */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Status:</span>
+            <span className={`text-sm font-medium ${statusInfo.statusColor}`}>
+              {statusInfo.statusText}
+            </span>
+          </div>
+          
+          {/* Game ID */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Game ID:</span>
+            <span className="text-sm font-mono text-card-foreground">#{game.id}</span>
+          </div>
+        </div>
+        
+        {/* Hover Effect */}
+        <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+          <p className="text-center text-sm text-primary mt-2 font-medium">
+            {type === 'joinable' ? '🎯 Join Battle' : type === 'active' ? '⚡ Continue Game' : '📊 View Results'}
+          </p>
+        </div>
+      </Link>
+    );
+  };
 
   return (
-    <div className="w-full max-w-4xl space-y-12">
-      {userData ? (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Active Games</h2>
+    <div className="w-full space-y-16">
+      {/* Active Games */}
+      {userData && (
+        <section className="animate-slide-in">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="text-3xl">⚡</div>
+            <h2 className="text-3xl font-bold text-foreground">Active Battles</h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-primary to-transparent" />
+          </div>
+          
           {userGames.length === 0 ? (
-            <div className="text-center py-12 border rounded-lg">
-              <p className="text-gray-500 mb-4">
-                You haven&apos;t joined any games yet
-              </p>
-              <Link
-                href="/create"
-                className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                Create New Game
-              </Link>
-            </div>
+            <EmptyState 
+              title="No Active Battles" 
+              description="You don't have any ongoing games. Start a new battle to begin!" 
+              buttonText="Start New Battle"
+            />
           ) : (
-            <div className="flex items-center gap-8 max-w-7xl overflow-y-scroll">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {userGames.map((game, index) => (
-                <Link
-                  key={`your-game-${index}`}
-                  href={`/game/${game.id}`}
-                  className="shrink-0 flex flex-col gap-2 border p-4 rounded-md border-gray-700 bg-gray-900 w-fit"
-                >
-                  <GameBoard
-                    key={index}
-                    board={game.board}
-                    cellClassName="size-8 text-xl"
-                  />
-                  <div className="text-md px-1 py-0.5 bg-gray-800 rounded text-center w-full">
-                    {formatStx(game["bet-amount"])} STX
-                  </div>
-                  <div className="text-md px-1 py-0.5 bg-gray-800 rounded text-center w-full">
-                    Next Turn: {game["is-player-one-turn"] ? "X" : "O"}
-                  </div>
-                </Link>
+                <GameCard key={`your-game-${index}`} game={game} type="active" />
               ))}
             </div>
           )}
+        </section>
+      )}
+
+      {/* Joinable Games */}
+      <section className="animate-slide-in" style={{animationDelay: '0.2s'}}>
+        <div className="flex items-center gap-3 mb-8">
+          <div className="text-3xl">🎯</div>
+          <h2 className="text-3xl font-bold text-foreground">Open Challenges</h2>
+          <div className="flex-1 h-px bg-gradient-to-r from-secondary to-transparent" />
         </div>
-      ) : null}
-
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Joinable Games</h2>
+        
         {joinableGames.length === 0 ? (
-          <div className="text-center py-12 border rounded-lg">
-            <p className="text-gray-500 mb-4">
-              No joinable games found. Do you want to create a new one?
-            </p>
-            <Link
-              href="/create"
-              className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Create New Game
-            </Link>
-          </div>
+          <EmptyState 
+            title="No Open Challenges" 
+            description="No battles are waiting for opponents. Create one and let others join!" 
+            buttonText="Create Challenge"
+          />
         ) : (
-          <div className="flex items-center gap-8 max-w-7xl overflow-y-scroll">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {joinableGames.map((game, index) => (
-              <Link
-                key={`joinable-game-${index}`}
-                href={`/game/${game.id}`}
-                className="shrink-0 flex flex-col gap-2 border p-4 rounded-md border-gray-700 bg-gray-900 w-fit"
-              >
-                <GameBoard
-                  key={index}
-                  board={game.board}
-                  cellClassName="size-8 text-xl"
-                />
-                <div className="text-md px-1 py-0.5 bg-gray-800 rounded text-center w-full">
-                  {formatStx(game["bet-amount"])} STX
-                </div>
-                <div className="text-md px-1 py-0.5 bg-gray-800 rounded text-center w-full">
-                  Next Turn: {game["is-player-one-turn"] ? "X" : "O"}
-                </div>
-              </Link>
+              <GameCard key={`joinable-game-${index}`} game={game} type="joinable" />
             ))}
           </div>
         )}
-      </div>
+      </section>
 
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Ended Games</h2>
-        {endedGames.length === 0 ? (
-          <div className="text-center py-12 border rounded-lg">
-            <p className="text-gray-500 mb-4">
-              No ended games yet. Do you want to create a new one?
-            </p>
-            <Link
-              href="/create"
-              className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Create New Game
-            </Link>
+      {/* Ended Games */}
+      {endedGames.length > 0 && (
+        <section className="animate-slide-in" style={{animationDelay: '0.4s'}}>
+          <div className="flex items-center gap-3 mb-8">
+            <div className="text-3xl">🏆</div>
+            <h2 className="text-3xl font-bold text-foreground">Battle History</h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-warning to-transparent" />
           </div>
-        ) : (
-          <div className="flex items-center gap-8 max-w-7xl overflow-y-scroll">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {endedGames.map((game, index) => (
-              <Link
-                key={`ended-game-${index}`}
-                href={`/game/${game.id}`}
-                className="shrink-0 flex flex-col gap-2 border p-4 rounded-md border-gray-700 bg-gray-900 w-fit"
-              >
-                <GameBoard
-                  key={index}
-                  board={game.board}
-                  cellClassName="size-8 text-xl"
-                />
-                <div className="text-md px-1 py-0.5 bg-gray-800 rounded text-center w-full">
-                  {formatStx(game["bet-amount"])} STX
-                </div>
-                <div className="text-md px-1 py-0.5 bg-gray-800 rounded text-center w-full">
-                  Winner: {game["is-player-one-turn"] ? "O" : "X"}
-                </div>
-              </Link>
+              <GameCard key={`ended-game-${index}`} game={game} type="ended" />
             ))}
           </div>
-        )}
-      </div>
+        </section>
+      )}
     </div>
   );
 }
