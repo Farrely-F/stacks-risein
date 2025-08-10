@@ -197,7 +197,7 @@ const CreateAuctionForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <Card>
+      <Card className="bg-background">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Plus className="h-5 w-5" />
@@ -341,7 +341,7 @@ const CreateAuctionForm: React.FC = () => {
       </Alert>
 
       {/* User Balance Info */}
-      <Card>
+      <Card className="bg-background">
         <CardContent className="pt-6">
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">

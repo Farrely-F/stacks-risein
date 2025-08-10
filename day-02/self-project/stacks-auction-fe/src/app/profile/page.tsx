@@ -74,21 +74,24 @@ export default function ProfilePage() {
 
         {/* Profile Content */}
         <Tabs defaultValue="my-auctions" className="space-y-6">
-          <TabsList>
+          <TabsList className="tabs-list">
             <TabsTrigger
               value="my-auctions"
-              className="flex items-center gap-2"
+              className="tab-trigger flex items-center gap-2"
             >
               <Gavel className="h-4 w-4" />
               My Auctions
             </TabsTrigger>
-            <TabsTrigger value="won-items" className="flex items-center gap-2">
+            <TabsTrigger
+              value="won-items"
+              className="tab-trigger flex items-center gap-2"
+            >
               <Trophy className="h-4 w-4" />
               Won Items
             </TabsTrigger>
             <TabsTrigger
               value="participated"
-              className="flex items-center gap-2"
+              className="tab-trigger flex items-center gap-2"
             >
               <Clock className="h-4 w-4" />
               Participated
@@ -99,7 +102,7 @@ export default function ProfilePage() {
           <TabsContent value="my-auctions">
             <div className="grid gap-6 md:grid-cols-2">
               {/* Active Auctions */}
-              <Card>
+              <Card className="bg-background">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Package className="h-5 w-5 text-primary" />
@@ -115,7 +118,7 @@ export default function ProfilePage() {
                         <Link
                           key={auction.id}
                           href={`/auction/${auction.id}`}
-                          className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                          className="btn block p-4 rounded-lg transition-colors"
                         >
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="font-medium">{auction.title}</h3>
@@ -132,7 +135,7 @@ export default function ProfilePage() {
               </Card>
 
               {/* Ended Auctions */}
-              <Card>
+              <Card className="bg-background">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Gavel className="h-5 w-5 text-primary" />
@@ -148,7 +151,7 @@ export default function ProfilePage() {
                         <Link
                           key={auction.id}
                           href={`/auction/${auction.id}`}
-                          className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                          className="btn block p-4 rounded-lg transition-colors"
                         >
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="font-medium">{auction.title}</h3>
@@ -170,7 +173,7 @@ export default function ProfilePage() {
 
           {/* Won Items Tab */}
           <TabsContent value="won-items">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-primary" />
@@ -186,7 +189,7 @@ export default function ProfilePage() {
                       <Link
                         key={auction.id}
                         href={`/auction/${auction.id}`}
-                        className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                        className="btn block p-4 rounded-lg transition-colors"
                       >
                         <div className="flex justify-between items-start mb-2">
                           <h3 className="font-medium">{auction.title}</h3>
@@ -207,7 +210,7 @@ export default function ProfilePage() {
 
           {/* Participated Tab */}
           <TabsContent value="participated">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-primary" />
@@ -225,7 +228,7 @@ export default function ProfilePage() {
                       <Link
                         key={auction.id}
                         href={`/auction/${auction.id}`}
-                        className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                        className="btn block p-4 rounded-lg transition-colors"
                       >
                         <div className="flex justify-between items-start mb-2">
                           <h3 className="font-medium">{auction.title}</h3>

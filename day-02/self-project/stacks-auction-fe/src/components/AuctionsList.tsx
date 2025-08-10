@@ -131,7 +131,7 @@ const AuctionsList: React.FC = () => {
     const isActive = currentBlockHeight < auction.endBlock && auction.isActive;
 
     return (
-      <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
+      <Card className="bg-background group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="space-y-1 flex-1">
@@ -290,7 +290,7 @@ const AuctionsList: React.FC = () => {
           value={sortBy}
           onValueChange={(value: SortOption) => setSortBy(value)}
         >
-          <SelectTrigger className="w-full sm:w-48">
+          <SelectTrigger className="w-full sm:w-48 h-full">
             <Filter className="h-4 w-4 mr-2" />
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>

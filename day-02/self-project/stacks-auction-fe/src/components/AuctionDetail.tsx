@@ -294,7 +294,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Auction Info Card */}
-          <Card>
+          <Card className="bg-background">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="space-y-2 flex-1">
@@ -465,7 +465,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
         <div className="space-y-6">
           {/* Bidding Card */}
           {isActive && !isUserSeller && user.isConnected && (
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <TrendingUp className="h-5 w-5" />

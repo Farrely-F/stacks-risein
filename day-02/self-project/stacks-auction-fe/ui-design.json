@@ -1,0 +1,252 @@
+{
+  "style": "Neobrutalist Landing Page",
+  "reference": "Gumroad-like hero with bold wordmark, split hero, bright blocks, thick strokes",
+  "brand_voice": ["bold", "playful", "unapologetic", "high-contrast"],
+  "layout": {
+    "page_width": 1200,
+    "max_container": 1200,
+    "grid": {
+      "columns": 12,
+      "gutter": 24,
+      "margin": 24
+    },
+    "hero": {
+      "split": "50/50",
+      "divider": {
+        "position": "center",
+        "width": 4,
+        "color_token": "ink/100"
+      },
+      "left_panel": {
+        "background_token": "brand/pink",
+        "padding": 40,
+        "content": ["eyebrow_optional", "headline", "subcopy", "primary_cta"]
+      },
+      "right_panel": {
+        "background_token": "brand/yellow",
+        "padding": 0,
+        "content": ["cutout_portrait", "sticker_icons", "caption_chip"]
+      }
+    },
+    "navbar": {
+      "height": 72,
+      "background": "white",
+      "border_bottom": {
+        "width": 2,
+        "color_token": "ink/100"
+      },
+      "items": ["Features", "Pricing", "University", "Blog", "Discover"],
+      "right_items": ["Login", "Start Selling (primary)"]
+    },
+    "footer": {
+      "background": "white",
+      "border_top": {
+        "width": 2,
+        "color_token": "ink/100"
+      }
+    }
+  },
+  "colors": {
+    "ink/100": "#000000",
+    "ink/60": "rgba(0,0,0,0.6)",
+    "ink/20": "rgba(0,0,0,0.2)",
+    "paper/100": "#FFFFFF",
+    "brand/pink": "#FF86CF",
+    "brand/yellow": "#F7C200",
+    "brand/lilac": "#EFA7FF",
+    "brand/green": "#64F0A5",
+    "accent/blue": "#5BC0FF",
+    "muted/cream": "#FFF7EA"
+  },
+  "typography": {
+    "google_fonts_import": "https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&display=swap",
+    "display_font": {
+      "family": "Rubik",
+      "weights": [300, 400, 500, 600, 700, 800, 900],
+      "tracking": -0.5
+    },
+    "text_font": {
+      "family": "Work Sans",
+      "weights": [400, 500, 600],
+      "tracking": 0
+    },
+    "scale": {
+      "display": { "size": 96, "line_height": 1.0, "weight": 700 },
+      "h1": { "size": 56, "line_height": 1.05, "weight": 700 },
+      "h2": { "size": 40, "line_height": 1.1, "weight": 700 },
+      "h3": { "size": 28, "line_height": 1.15, "weight": 600 },
+      "body_lg": { "size": 18, "line_height": 1.5, "weight": 400 },
+      "body": { "size": 16, "line_height": 1.6, "weight": 400 },
+      "caption": { "size": 13, "line_height": 1.4, "weight": 500 },
+      "nav": { "size": 16, "line_height": 1.2, "weight": 500 }
+    }
+  },
+  "borders": {
+    "stroke_width": 2,
+    "radius_sm": 8,
+    "radius_md": 12,
+    "radius_lg": 16,
+    "style": "solid",
+    "color_token": "ink/100"
+  },
+  "shadows": {
+    "hard_drop": {
+      "x": 0,
+      "y": 4,
+      "blur": 0,
+      "spread": 0,
+      "color": "rgba(0,0,0,1)"
+    },
+    "soft_card": {
+      "x": 0,
+      "y": 16,
+      "blur": 24,
+      "spread": 0,
+      "color": "rgba(0,0,0,0.12)"
+    }
+  },
+  "buttons": {
+    "primary": {
+      "background_token": "ink/100",
+      "text_color_token": "paper/100",
+      "border": { "width": 2, "color_token": "ink/100" },
+      "radius": 12,
+      "padding": { "x": 24, "y": 16 },
+      "shadow": "none",
+      "hover": { "translateY": -2 },
+      "focus": { "outline": 2, "outline_color_token": "ink/100" }
+    },
+    "secondary": {
+      "background": "transparent",
+      "text_color_token": "ink/100",
+      "border": { "width": 2, "color_token": "ink/100" },
+      "radius": 12,
+      "padding": { "x": 20, "y": 12 }
+    },
+    "chip": {
+      "background": "white",
+      "text_color_token": "ink/100",
+      "border": { "width": 2, "color_token": "ink/100" },
+      "radius": 999,
+      "padding": { "x": 14, "y": 8 }
+    }
+  },
+  "components": {
+    "wordmark": {
+      "font_family": "Space Grotesk",
+      "weight": 700,
+      "case": "uppercase",
+      "tracking": -2,
+      "size": 120,
+      "color_token": "ink/100",
+      "spacing": { "letter_overlap": true }
+    },
+    "nav_link": {
+      "font_family": "Work Sans",
+      "weight": 500,
+      "color_token": "ink/100",
+      "padding_y": 20,
+      "active_underline": { "height": 2, "color_token": "ink/100" }
+    },
+    "hero_headline": {
+      "font_family": "Space Grotesk",
+      "weight": 700,
+      "size": 56,
+      "color_token": "ink/100",
+      "max_width": 520
+    },
+    "hero_subcopy": {
+      "font_family": "Work Sans",
+      "size": 16,
+      "line_height": 1.6,
+      "color_token": "ink/60",
+      "max_width": 520
+    },
+    "portrait_cutout": {
+      "style": "photo cutout",
+      "mask_shape": "organic blob",
+      "mask_fill_token": "brand/lilac",
+      "border": { "width": 2, "color_token": "ink/100" },
+      "drop_shadow": { "x": 6, "y": 6, "blur": 0, "color": "rgba(0,0,0,1)" }
+    },
+    "sticker_icon": {
+      "background_token": "brand/yellow",
+      "outline": { "width": 2, "color_token": "ink/100" },
+      "shadow": { "x": 6, "y": 6, "blur": 0, "color": "rgba(0,0,0,1)" },
+      "typography": { "family": "Space Grotesk", "weight": 700 }
+    },
+    "badge_chip": {
+      "background": "white",
+      "border": { "width": 2, "color_token": "ink/100" },
+      "radius": 999,
+      "icon_circle": {
+        "size": 24,
+        "background_token": "ink/100",
+        "text_color_token": "paper/100"
+      },
+      "text": { "family": "Work Sans", "size": 14, "weight": 600 }
+    },
+    "card": {
+      "background": "white",
+      "border": { "width": 2, "color_token": "ink/100" },
+      "radius": 12,
+      "padding": 24,
+      "shadow": "soft_card"
+    }
+  },
+  "decor": {
+    "blob_shapes": {
+      "enabled": true,
+      "stroke": { "width": 2, "color_token": "ink/100" },
+      "fills": ["brand/lilac", "brand/green", "accent/blue"]
+    }
+  },
+  "imagery": {
+    "treatment": "high-contrast portrait with clean cutout",
+    "background_shapes": "organic blobs with thick black outline",
+    "sticker_pile": "overlapping circular stickers with thick outline and drop shadows"
+  },
+  "interactions": {
+    "links_hover": { "underline": true, "y_move": -1 },
+    "buttons_press": { "scale": 0.985 },
+    "focus_ring": { "width": 2, "color_token": "ink/100", "offset": 2 },
+    "divider_drag": "none (static visual divider)"
+  },
+  "breakpoints": {
+    "sm": 640,
+    "md": 768,
+    "lg": 1024,
+    "xl": 1280,
+    "responsive_rules": [
+      {
+        "max": 1024,
+        "hero_split": "stacked",
+        "order": ["right_panel", "left_panel"],
+        "divider_hidden": true,
+        "padding": 24,
+        "headline_size": 40
+      },
+      {
+        "max": 640,
+        "nav": "collapse_to_menu",
+        "wordmark_size": 64,
+        "gutter": 16
+      }
+    ]
+  },
+  "accessibility": {
+    "min_contrast": 4.5,
+    "focus_visible": true,
+    "motion_reduced": { "disable_shadows": false, "reduce_transforms": true },
+    "hit_area_min": 44
+  },
+  "export": {
+    "css_tokens_prefix": "--nb-",
+    "example_tokens": {
+      "--nb-ink-100": "#000000",
+      "--nb-brand-pink": "#FF86CF",
+      "--nb-brand-yellow": "#F7C200"
+    }
+  },
+  "style_notes": "Use thick black strokes (2–4px), flat color blocks, and occasional hard shadows for stickers/cutouts. Headlines are very bold with tight tracking; body stays friendly and readable. Maintain playful blob shapes with outlines on the media side and keep CTAs in solid black with white text."
+}
