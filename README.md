@@ -94,7 +94,36 @@ This folder contains all the work from the bootcamp:
 
 ## 🎉 Final Project
 
-Here, I present my final implementation of the individual project, including smart contract code, testing procedures, and project documentation. If applicable, the project will also include **frontend integration** or **testnet deployment**.
+### Stacks Auction
+
+Traditional auction platforms suffer from centralized control, high fees, lack of transparency, geographic limitations, and trust issues. These platforms create barriers for both buyers and sellers while extracting significant value from transactions. There is a critical need for a decentralized auction platform that leverages blockchain technology to create a transparent, trustless, and globally accessible marketplace.
+
+#### Contract Overview
+
+- **Auction Contract**: Manages the creation, bidding, and ending of auctions.
+- **Token Contract**: Handles the creation and transfer of auction tokens (e.g., STX).
+- **Marketplace Contract**: Facilitates the listing, buying, and selling of items on the auction platform.
+
+```yaml
+id: 0
+name: Testnet deployment
+network: testnet
+stacks-node: "https://api.testnet.hiro.so"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoind.testnet.stacks.co:18332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: stacks-auction-v2
+            expected-sender: ST214GJ5G2K6ZHF3BWF2P4ZPA9CBJVGMBAPP6RW6X
+            cost: 129570
+            path: contracts/stacks-auction-v2.clar
+            anchor-block-only: true
+            clarity-version: 3
+      epoch: "3.2"
+      network: testnet
+```
 
 ## 🔗 Links & Resources
 
