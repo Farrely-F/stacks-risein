@@ -104,6 +104,12 @@ body {
     font-family: var(--font-orbitron);
   }
 
+  button,
+  input[type="submit"],
+  a {
+    @apply cursor-pointer;
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
