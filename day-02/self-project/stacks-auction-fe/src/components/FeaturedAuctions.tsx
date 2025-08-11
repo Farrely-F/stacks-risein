@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatStx } from "@/lib/stacks";
-import { Clock, User, TrendingUp, ArrowRight } from "lucide-react";
+import { Clock, User, ArrowRight } from "lucide-react";
 import { Auction } from "@/types/auction";
 
 const FeaturedAuctions: React.FC = () => {
@@ -77,7 +77,7 @@ const FeaturedAuctions: React.FC = () => {
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-4 pt-4">
+        <CardContent className="space-y-4 pt-4 flex-1">
           {/* Seller Info */}
           <div className="flex items-center space-x-2 text-sm font-bold border-2 border-black p-2">
             <User className="h-4 w-4" />

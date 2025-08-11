@@ -31,7 +31,7 @@ import {
   ArrowLeft,
   ExternalLink,
 } from "lucide-react";
-import { Auction, UserBid } from "@/types/auction";
+import { UserBid } from "@/types/auction";
 
 interface AuctionDetailProps {
   auctionId: number;
@@ -514,7 +514,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
             <div className="space-y-4">
               {/* Winner can claim item */}
               {isUserHighestBidder && (
-                <Card>
+                <Card className="bg-background">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
                       <Trophy className="h-5 w-5" />
@@ -538,7 +538,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
 
               {/* Seller can end auction */}
               {isUserSeller && isActive && hasReachedEndBlock && (
-                <Card>
+                <Card className="bg-background">
                   <CardHeader>
                     <CardTitle>End Auction</CardTitle>
                   </CardHeader>
@@ -565,7 +565,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
               {isUserSeller &&
                 auction.highestBidder &&
                 !auction.paymentClaimed && (
-                  <Card>
+                  <Card className="bg-background">
                     <CardHeader>
                       <CardTitle>Claim Payment</CardTitle>
                     </CardHeader>
@@ -587,7 +587,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
 
               {/* Non-winner can claim bid back */}
               {!isUserHighestBidder && userBid && !auction.paymentClaimed && (
-                <Card>
+                <Card className="bg-background">
                   <CardHeader>
                     <CardTitle>Claim Bid Back</CardTitle>
                   </CardHeader>
@@ -610,7 +610,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
 
           {/* Seller Actions */}
           {isUserSeller && isActive && (
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
                 <CardTitle>Seller Actions</CardTitle>
               </CardHeader>
@@ -632,7 +632,7 @@ const AuctionDetail: React.FC<AuctionDetailProps> = ({ auctionId }) => {
 
           {/* Connect Wallet Prompt */}
           {!user.isConnected && (
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
                 <CardTitle>Connect Wallet</CardTitle>
               </CardHeader>

@@ -7,7 +7,7 @@ import React, {
   useState,
   ReactNode,
 } from "react";
-import { Auction, AuctionStatus } from "@/types/auction";
+import { Auction } from "@/types/auction";
 import {
   getAuction,
   getCurrentBlockHeight,
