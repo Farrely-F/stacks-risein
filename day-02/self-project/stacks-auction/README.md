@@ -13,6 +13,7 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
 - **Platform Management**: Decentralized fee collection and admin functions
 
 ### Key Features
+
 - 🔒 **Secure Smart Contracts**: Built with Clarity for maximum security and transparency
 - 💰 **Automatic Payments**: Instant STX transfers with platform fee deduction (2.5%)
 - 🎨 **NFT Integration**: Native NFT minting and transfer functionality
@@ -25,7 +26,9 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
 ### Core Smart Contract Functions
 
 #### 1. Auction Management
+
 - **`create-auction`**: Create new auctions with NFT minting
+
   - Input validation for title, description, price, and duration
   - Automatic NFT minting to contract
   - Configurable auction duration (minimum 144 blocks)
@@ -35,6 +38,7 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
   - Updates auction status to inactive
 
 #### 2. Bidding System
+
 - **`place-bid`**: Submit bids with validation
   - Minimum bid increment enforcement (1 STX)
   - Automatic refund to previous highest bidder
@@ -42,7 +46,9 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
   - Bid tracking per user
 
 #### 3. Claiming Mechanism
+
 - **`claim-item`**: Winners claim NFTs
+
   - Ownership verification
   - NFT transfer from contract to winner
   - Prevents double claiming
@@ -53,12 +59,14 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
   - Payment tracking
 
 #### 4. Read-Only Functions
+
 - **`get-auction`**: Retrieve auction details
 - **`get-user-bid`**: Check user's bid for specific auction
 - **`get-owner`**: NFT ownership verification
 - **`get-platform-earnings`**: Platform fee tracking
 
 #### 5. Admin Functions
+
 - **`withdraw-platform-earnings`**: Owner-only fee withdrawal
 - **`set-platform-fee-rate`**: Adjustable platform fees (max 10%)
 
@@ -83,6 +91,7 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
 ## 🔄 User Flow
 
 ### For Sellers (Auction Creators)
+
 1. **Connect Wallet** → Connect Stacks wallet to the dApp
 2. **Create Auction** → Fill auction form (title, description, starting price, duration)
 3. **NFT Minting** → Smart contract automatically mints NFT to contract address
@@ -91,6 +100,7 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
 6. **Claim Payment** → Receive STX payment minus 2.5% platform fee
 
 ### For Bidders
+
 1. **Connect Wallet** → Connect Stacks wallet with sufficient STX balance
 2. **Browse Auctions** → View active auctions with current bid information
 3. **Place Bid** → Submit bid higher than current bid + 1 STX minimum increment
@@ -99,6 +109,7 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
 6. **Claim NFT** → Transfer NFT from contract to personal wallet
 
 ### Platform Flow
+
 1. **Auction Creation** → NFT minted and auction data stored on-chain
 2. **Bidding Phase** → Real-time bid updates with automatic validations
 3. **Auction Completion** → Status updated, claiming phase begins
@@ -108,6 +119,7 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
 ## 🌐 Frontend Integration
 
 ### Technology Stack
+
 - **Framework**: Next.js 14 with TypeScript
 - **Styling**: Tailwind CSS for responsive design
 - **Blockchain Integration**: @stacks/connect for wallet connectivity
@@ -117,18 +129,19 @@ Stacks Auction is a fully decentralized auction dApp that leverages the Stacks b
 ### Key Frontend Components
 
 #### 1. Wallet Integration
+
 ```typescript
 // Wallet connection using @stacks/connect
-import { showConnect, UserSession } from '@stacks/connect';
-import { StacksMainnet } from '@stacks/network';
+import { showConnect, UserSession } from "@stacks/connect";
+import { StacksMainnet } from "@stacks/network";
 
 const connectWallet = () => {
   showConnect({
     appDetails: {
-      name: 'Stacks Auction',
-      icon: '/logo.png',
+      name: "Stacks Auction",
+      icon: "/logo.png",
     },
-    redirectTo: '/',
+    redirectTo: "/",
     onFinish: () => {
       // Handle successful connection
     },
@@ -138,53 +151,60 @@ const connectWallet = () => {
 ```
 
 #### 2. Smart Contract Interaction
+
 ```typescript
 // Contract calls using @stacks/transactions
-import { 
+import {
   makeContractCall,
   broadcastTransaction,
   AnchorMode,
   PostConditionMode,
   stringAsciiCV,
-  uintCV
-} from '@stacks/transactions';
+  uintCV,
+} from "@stacks/transactions";
 
-const createAuction = async (title: string, description: string, price: number, duration: number) => {
+const createAuction = async (
+  title: string,
+  description: string,
+  price: number,
+  duration: number
+) => {
   const txOptions = {
-    contractAddress: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM',
-    contractName: 'stacks-auction',
-    functionName: 'create-auction',
+    contractAddress: "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+    contractName: "stacks-auction",
+    functionName: "create-auction",
     functionArgs: [
       stringAsciiCV(title),
       stringAsciiCV(description),
       uintCV(price),
-      uintCV(duration)
+      uintCV(duration),
     ],
     senderKey: userSession.loadUserData().profile.stxAddress.mainnet,
     network,
     anchorMode: AnchorMode.Any,
   };
-  
+
   const transaction = await makeContractCall(txOptions);
   return broadcastTransaction(transaction, network);
 };
 ```
 
 #### 3. Real-time Data Fetching
+
 ```typescript
 // Auction data fetching
-import { callReadOnlyFunction } from '@stacks/transactions';
+import { callReadOnlyFunction } from "@stacks/transactions";
 
 const fetchAuction = async (auctionId: number) => {
   const result = await callReadOnlyFunction({
-    contractAddress: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM',
-    contractName: 'stacks-auction',
-    functionName: 'get-auction',
+    contractAddress: "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+    contractName: "stacks-auction",
+    functionName: "get-auction",
     functionArgs: [uintCV(auctionId)],
     network,
     senderAddress: userSession.loadUserData().profile.stxAddress.mainnet,
   });
-  
+
   return result;
 };
 ```
@@ -192,18 +212,21 @@ const fetchAuction = async (auctionId: number) => {
 ### Page Structure
 
 #### 1. **Home Page** (`/`)
+
 - Hero section with platform overview
 - Featured active auctions grid
 - Statistics (total auctions, volume, users)
 - Call-to-action buttons
 
 #### 2. **Auctions Page** (`/auctions`)
+
 - Filterable auction list (active, ended, category)
 - Search functionality
 - Sorting options (price, time remaining, popularity)
 - Pagination for large datasets
 
 #### 3. **Auction Detail Page** (`/auction/[id]`)
+
 - Auction information display
 - Current bid and bidding history
 - Countdown timer
@@ -211,18 +234,21 @@ const fetchAuction = async (auctionId: number) => {
 - Seller information
 
 #### 4. **Create Auction Page** (`/create`)
+
 - Auction creation form
 - Image upload for NFT metadata
 - Price and duration selection
 - Preview functionality
 
 #### 5. **Profile Page** (`/profile`)
+
 - User's created auctions
 - Bidding history
 - Won items
 - Claim actions (items/payments)
 
 #### 6. **Dashboard** (`/dashboard`)
+
 - Personal auction management
 - Earnings tracking
 - Platform statistics (for admins)
@@ -243,25 +269,28 @@ interface AppState {
     loading: boolean;
   };
   ui: {
-    theme: 'light' | 'dark';
+    theme: "light" | "dark";
     notifications: Notification[];
   };
 }
 ```
 
 ### Real-time Updates
+
 - **WebSocket Integration**: For live bid updates
 - **Polling Strategy**: Regular contract state checks
 - **Event Listeners**: Blockchain event monitoring
 - **Optimistic Updates**: Immediate UI feedback
 
 ### Error Handling
+
 - **Transaction Failures**: User-friendly error messages
 - **Network Issues**: Retry mechanisms
 - **Validation Errors**: Form validation feedback
 - **Loading States**: Skeleton screens and spinners
 
 ### Security Considerations
+
 - **Input Validation**: Client and contract-side validation
 - **Transaction Verification**: Confirm transaction success
 - **Rate Limiting**: Prevent spam transactions
@@ -270,6 +299,7 @@ interface AppState {
 ## 🧪 Testing
 
 The project includes comprehensive test coverage:
+
 - **28 test cases** covering all smart contract functions
 - **Unit tests** for individual function validation
 - **Integration tests** for complete user flows
@@ -286,6 +316,7 @@ npm run test:coverage
 ## 🚀 Deployment
 
 ### Smart Contract Deployment
+
 ```bash
 # Deploy to testnet
 clarinet deployments apply --devnet
@@ -295,6 +326,7 @@ clarinet deployments apply --mainnet
 ```
 
 ### Frontend Deployment
+
 ```bash
 # Build for production
 npm run build
